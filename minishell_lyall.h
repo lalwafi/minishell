@@ -30,6 +30,7 @@
 # include <curses.h>
 # include <term.h>
 
+
 typedef struct s_environment	t_environment;
 typedef struct s_shell			t_shell;
 typedef struct s_values			t_values;
@@ -60,7 +61,7 @@ typedef struct s_values
 {
 	char		*key;
 	char		*value;
-	char		*str;
+	char		*envstr;
 	t_values	*next;
 } t_values;
 
@@ -69,6 +70,19 @@ typedef struct s_values
 void	get_env(t_shell *shell, char **env);
 char	*key_time(char *env);
 void	initialize_shell(t_shell *shell);
+
+// utils
+
+char	*ft_strdup(const char *s1);
+void	ft_lstadd_back(t_values **lst, t_values *new);
+void	ft_lstadd_front(t_values **lst, t_values *new);
+void	ft_lstclear(t_values **lst, void (*del)(void *));
+void	ft_lstdelone(t_values *lst, void (*del)(void *));
+void	ft_lstiter(t_values *lst, void (*f)(void *));
+t_values	*ft_lstlast(t_values *lst);
+t_values	*ft_lstmap(t_values *lst, void *(*f)(void *), void (*del)(void *));
+t_values	*ft_lstnew(void *content);
+int	ft_lstsize(t_values *lst);
 
 
 #endif

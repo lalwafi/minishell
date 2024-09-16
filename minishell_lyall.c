@@ -41,6 +41,29 @@ char *key_time(char *env)
 	return (key);
 }
 
+void	ft_lstadd_back_values(t_values **lst, t_values *new)
+{
+	t_values	*last;
+
+	last = ft_lstlast(*lst);
+	if (*lst)
+		last -> next = new;
+	else
+		*lst = new;
+}
+
+void	make_values_node(char *key, char *envline, t_shell *shell)
+{
+	t_values	*temp;
+
+	temp = malloc(sizeof(t_values));
+	temp->envstr = ft_strdup(envline);
+	temp->key = ft_strdup(key);
+	temp->value = getenv(temp->key);
+	temp->next = NULL;
+	ft_lstadd_back_values(&shell->environment->vals, temp);
+}
+
 void	get_env(t_shell *shell, char **env)
 {
 	int	i;
@@ -56,7 +79,8 @@ void	get_env(t_shell *shell, char **env)
 	while (env[++i])
 	{
 		key = key_time(env[i]);
-		
+		make_values_node(key, env[i], shell);
+		free(key);
 	}
 }
 
@@ -77,6 +101,6 @@ int	main(int ac, char **av, char **env)
     // } else {
     //     printf("PATH variable not found.\n");
     // }
-	// initialize_shell(&shell);
-	// get_env(&shell, env);
+	initialize_shell(&shell);
+	get_env(&shell, env);
 }
