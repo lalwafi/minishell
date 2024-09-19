@@ -12,6 +12,49 @@
 
 #include "minishell_lyall.h"
 
+int	ft_lstsize(t_values *lst)
+{
+	t_values	*current;
+	int			count;
+
+	count = 0;
+	if (!lst)
+		return (0);
+	current = lst;
+	while (current != NULL)
+	{
+		current = current -> next;
+		count++;
+	}
+	return (count);
+}
+
+t_values	*ft_lstlast_values(t_values *lst)
+{
+	int	i;
+
+	if (!lst)
+		return (NULL);
+	i = ft_lstsize(lst);
+	while (i > 1)
+	{
+		lst = lst -> next;
+		i--;
+	}
+	return (lst);
+}
+
+void	ft_lstadd_back_values(t_values **lst, t_values *new)
+{
+	t_values	*last;
+
+	last = ft_lstlast_values(*lst);
+	if (*lst)
+		last -> next = new;
+	else
+		*lst = new;
+}
+
 void	initialize_shell(t_shell *shell)
 {
 	shell->fd = -1;
@@ -39,17 +82,6 @@ char *key_time(char *env)
 		key[i] = env[i];
 	key[i] = '\0';
 	return (key);
-}
-
-void	ft_lstadd_back_values(t_values **lst, t_values *new)
-{
-	t_values	*last;
-
-	last = ft_lstlast(*lst);
-	if (*lst)
-		last -> next = new;
-	else
-		*lst = new;
 }
 
 void	make_values_node(char *key, char *envline, t_shell *shell)
@@ -95,7 +127,7 @@ int	main(int ac, char **av, char **env)
 	while (env[++i])
 		printf("%s\n", env[i]);
 
-	char *path = getenv("PATH");
+	// char *path = getenv("PATH");
     // if (path != NULL) {
     //     printf("PATH: %s\n", path);
     // } else {
@@ -103,4 +135,12 @@ int	main(int ac, char **av, char **env)
     // }
 	initialize_shell(&shell);
 	get_env(&shell, env);
+	int	j = -1;
+	while (shell.environment->vals)
+	{
+		printf("%d\t%s\n", ++j, shell.environment->vals->key);
+		printf("\t%s\n", shell.environment->vals->value);
+		printf("\t%s\n", shell.environment->vals->envstr);
+		shell.environment->vals = shell.environment->vals->next;
+	}
 }

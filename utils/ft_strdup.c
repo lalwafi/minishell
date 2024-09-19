@@ -6,11 +6,21 @@
 /*   By: lalwafi <lalwafi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 19:54:22 by lalwafi           #+#    #+#             */
-/*   Updated: 2024/09/16 19:54:45 by lalwafi          ###   ########.fr       */
+/*   Updated: 2024/09/19 14:25:54 by lalwafi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_lyall.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 char	*ft_strdup(const char *s1)
 {
