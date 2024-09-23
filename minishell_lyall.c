@@ -116,6 +116,11 @@ void	get_env(t_shell *shell, char **env)
 	}
 }
 
+void	change_shlvl(t_shell *shell)
+{
+	
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_shell shell;
@@ -134,6 +139,7 @@ int	main(int ac, char **av, char **env)
     //     printf("PATH variable not found.\n");
     // }
 	initialize_shell(&shell);
+	change_shlvl();
 	get_env(&shell, env);
 	int	j = -1;
 	while (shell.environment->vals)
