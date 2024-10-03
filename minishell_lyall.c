@@ -12,62 +12,15 @@
 
 #include "minishell_lyall.h"
 
-int	ft_lstsize(t_values *lst)
-{
-	t_values	*current;
-	int			count;
-
-	count = 0;
-	if (!lst)
-		return (0);
-	current = lst;
-	while (current != NULL)
-	{
-		current = current -> next;
-		count++;
-	}
-	return (count);
-}
-
-t_values	*ft_lstlast_values(t_values *lst)
-{
-	int	i;
-
-	if (!lst)
-		return (NULL);
-	i = ft_lstsize(lst);
-	while (i > 1)
-	{
-		lst = lst -> next;
-		i--;
-	}
-	return (lst);
-}
-
-void	ft_lstadd_back_values(t_values **lst, t_values *new)
-{
-	t_values	*last;
-
-	last = ft_lstlast_values(*lst);
-	if (*lst)
-		last -> next = new;
-	else
-		*lst = new;
-}
-
 void	initialize_shell(t_shell *shell)
 {
+	shell->input = NULL;
 	shell->fd = -1;
 	shell->child = -1;
 	shell->lastpid = -1;
 	shell->str = NULL;
 	shell->environment = NULL;
 }
-
-// void    initialize_environment(t_environment *environment)
-// {
-	
-// }
 
 char *key_time(char *env)
 {
@@ -108,6 +61,9 @@ void	get_env(t_shell *shell, char **env)
 	shell->environment->owd = getcwd(NULL, 0);
 	shell->environment->path = NULL;
 	shell->environment->environ = NULL;
+	shell->environment->vals = NULL;
+	// change shlvl
+	shell->environment->shlvl = 1;
 	while (env[++i])
 	{
 		key = key_time(env[i]);
@@ -116,9 +72,23 @@ void	get_env(t_shell *shell, char **env)
 	}
 }
 
-void	change_shlvl(t_shell *shell)
-{
+// void	change_shlvl(t_shell *shell)
+// {
 	
+// }
+
+void	minishell(t_shell *shell)
+{
+	while (1)
+	{
+		shell->input = readline("minishell> ");
+		if (!shell->input)
+			break ;
+		else if (shell->input[0] != '\0')
+			printf("got the input = %s\n", shell->input);
+		else if (shell->input[0] == '\0')
+			printf("???\n");
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -128,9 +98,9 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	if (ac != 1)
 		return (printf("no arguments\n"));
-	int i = -1;
-	while (env[++i])
-		printf("%s\n", env[i]);
+	// int i = -1;
+	// while (env[++i])
+	// 	printf("%s\n", env[i]);
 
 	// char *path = getenv("PATH");
     // if (path != NULL) {
@@ -139,14 +109,16 @@ int	main(int ac, char **av, char **env)
     //     printf("PATH variable not found.\n");
     // }
 	initialize_shell(&shell);
-	change_shlvl();
+	// change_shlvl();
 	get_env(&shell, env);
-	int	j = -1;
-	while (shell.environment->vals)
-	{
-		printf("%d\t%s\n", ++j, shell.environment->vals->key);
-		printf("\t%s\n", shell.environment->vals->value);
-		printf("\t%s\n", shell.environment->vals->envstr);
-		shell.environment->vals = shell.environment->vals->next;
-	}
+	sigaction()
+	minishell(&shell);
+	// int	j = -1;
+	// while (shell.environment->vals)
+	// {
+	// 	printf("%d\t%s\n", ++j, shell.environment->vals->key);
+	// 	printf("\t%s\n", shell.environment->vals->value);
+	// 	printf("\t%s\n", shell.environment->vals->envstr);
+	// 	shell.environment->vals = shell.environment->vals->next;
+	// }
 }

@@ -37,6 +37,7 @@ typedef struct s_values			t_values;
 
 typedef struct s_shell
 {
+	char	*input;
 	int     fd;
 	pid_t   child;
 	pid_t   lastpid;
@@ -73,16 +74,10 @@ void	initialize_shell(t_shell *shell);
 
 // utils
 
-char	*ft_strdup(const char *s1);
-void	ft_lstadd_back(t_values **lst, t_values *new);
-void	ft_lstadd_front(t_values **lst, t_values *new);
-void	ft_lstclear(t_values **lst, void (*del)(void *));
-void	ft_lstdelone(t_values *lst, void (*del)(void *));
-void	ft_lstiter(t_values *lst, void (*f)(void *));
-t_values	*ft_lstlast(t_values *lst);
-t_values	*ft_lstmap(t_values *lst, void *(*f)(void *), void (*del)(void *));
-t_values	*ft_lstnew(void *content);
-int	ft_lstsize(t_values *lst);
+char		*ft_strdup(const char *s1);
+int			ft_lstsize(t_values *lst);
+t_values	*ft_lstlast_values(t_values *lst);
+void		ft_lstadd_back_values(t_values **lst, t_values *new);
 
 
 #endif
