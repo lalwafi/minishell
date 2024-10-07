@@ -68,9 +68,11 @@ typedef struct s_values
 
 // functions lyall
 
-void	get_env(t_shell *shell, char **env);
-char	*key_time(char *env);
-void	initialize_shell(t_shell *shell);
+void		initialize_shell(t_shell *shell);
+void		get_env(t_shell *shell, char **env);
+char		*key_time(char *env);
+void		make_values_node(char *key, char *envline, t_shell *shell);
+void		minishell(t_shell *shell);
 
 // utils
 
@@ -78,6 +80,8 @@ char		*ft_strdup(const char *s1);
 int			ft_lstsize(t_values *lst);
 t_values	*ft_lstlast_values(t_values *lst);
 void		ft_lstadd_back_values(t_values **lst, t_values *new);
+void	ft_lstclear_values(t_values **lst, void (*del)(void *));
+void	ft_lstdelone_values(t_values *lst, void (*del)(void *));
 
 
 #endif

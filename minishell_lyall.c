@@ -79,6 +79,7 @@ void	get_env(t_shell *shell, char **env)
 
 void	minishell(t_shell *shell)
 {
+
 	while (1)
 	{
 		shell->input = readline("minishell> ");
@@ -91,6 +92,30 @@ void	minishell(t_shell *shell)
 	}
 }
 
+void	handle_signal(int signal)
+{
+	if (signal == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
+
+void	free_all(t_shell *shell)
+{
+	ft_lstclear_values(&shell->environment->vals, free);
+	if (shell->environment)
+	{
+		free(shell->environment->cwd);
+		free(shell->environment->owd);
+		// free(shell->environment->);
+		free(shell->environment);
+		// free(shell);
+	}
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_shell shell;
@@ -98,9 +123,23 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	if (ac != 1)
 		return (printf("no arguments\n"));
-	// int i = -1;
+	initialize_shell(&shell);
+	// change_shlvl();
+	get_env(&shell, env);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handle_signal);
+	minishell(&shell);
+	free_all(&shell);
+}
+
+// print env
+
+	//int i = -1;
 	// while (env[++i])
 	// 	printf("%s\n", env[i]);
+
+
+// find PATH in env and print
 
 	// char *path = getenv("PATH");
     // if (path != NULL) {
@@ -108,11 +147,10 @@ int	main(int ac, char **av, char **env)
     // } else {
     //     printf("PATH variable not found.\n");
     // }
-	initialize_shell(&shell);
-	// change_shlvl();
-	get_env(&shell, env);
-	sigaction()
-	minishell(&shell);
+
+
+// print shell env i made
+
 	// int	j = -1;
 	// while (shell.environment->vals)
 	// {
@@ -121,4 +159,3 @@ int	main(int ac, char **av, char **env)
 	// 	printf("\t%s\n", shell.environment->vals->envstr);
 	// 	shell.environment->vals = shell.environment->vals->next;
 	// }
-}
